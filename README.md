@@ -81,3 +81,69 @@ npm i cz-customizable@6.3.0 --save-dev
  git add .
  git cz
 ```
+
+### 通过 pre-commit 检测提交时代码规范 (针对 vscode 未配置vscode保存格式化时的补漏) 
+
+1. 安装 husky 生成.husky 文件夹
+
+```
+ npx husky install
+
+```
+
+2. .husky 文件夹内添加 pre-commit 和 commit-msg 文件以及添加文件内容
+
+```
+ npx husky add .husky/pre-commit "npx eslint --ext .js,.vue src"
+ npx husky add .husky/commit-msg 'npx --no-install commitlint  --edit "$1"'
+
+```
+
+3. 检查 vscode 的 setting Editor:Format On Save 是否勾选，假设未勾选
+~~ 结果eslint 抛错同时不处理直接提交到git 验证该功能的实现
+~~ 结果提交时运行.husky内pre-commit文件进行校验会报eslint校验不通过的报错处,但不负责修复格式报错。
+
+### lint-staged自动修复格式错误
+
+1. 安装lint-staged
+
+```
+npm install lint-staged@9.5.0 --save-dev
+
+```
+
+2. package.json 配置如下告知git提交时用lint-staged进行自动各式修复
+  ```
+  "githooks":{
+    "pre-commit":"lint-staged"
+  }
+
+  ```
+
+3. 配置lint-staged在package.json
+
+```
+"lint-staged":{
+  "src/**/*.{js,vue}":[
+    "eslint --fix",
+    "git add"
+  ]
+}
+
+
+```
+
+4. 重新配置.husky 下的pre-commit 内容 
+
+```
+- npx eslint --ext .js,.vue src
++ npx lint-staged
+
+```
+结果 ：1.若符合规则：提交成功
+       2.若不合符规则：它自动执行eslint --fix尝试自动修复，若修复失败则提示你的错误并让你修复后才能提交
+
+
+
+
+

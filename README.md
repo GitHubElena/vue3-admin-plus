@@ -95,7 +95,7 @@ npm i cz-customizable@6.3.0 --save-dev
 
 ```
  npx husky add .husky/pre-commit "npx eslint --ext .js,.vue src"
- npx husky add .husky/commit-msg 'npx --no-install commitlint  --edit "$1"'
+ npx husky add .husky/commit-msg '#npx --no-install commitlint  --edit "$1"'
 
 ```
 

@@ -45,3 +45,39 @@ Editor:Tab Size    2 让其和 eslint 一样 tab 代表两个空格不会冲突
 
 eslint 会校验 functionName 和后面括号的间隔，但 prettier 遇到我们保存时会自动消除空格此时为了解决冲突需要 eslintrc.js 文件内配置关闭校验的规则'space-before-function-paren':'off'重启服务器即可
 ```
+
+### 配置 git 提交规范
+
+1. 全局安装 Commitizen
+
+```
+npm install -g commitizen$4.2.4
+
+```
+
+2. 安装并配置 cz-customizable 插件
+
+```
+npm i cz-customizable@6.3.0 --save-dev
+
+```
+
+3. 添加以下配置到 package.json 中
+
+```
+"config":{
+  "commitizen":{
+    "path":"node_modules/cz-customizable"
+  }
+}
+
+```
+
+4. 配置 cz-config.js 文件
+
+5. git cz 来进行提交进入校验
+
+```
+ git add .
+ git cz
+```

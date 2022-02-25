@@ -4,6 +4,15 @@ function resolve(dir) {
 }
 
 module.exports = {
+  devServer: {
+    proxy: {
+      '/api': {
+        // 要代理的服务器发地址
+        target: 'https://api.imooc-admin.lgdsunday.club/',
+        changeOrigin: true // 是否跨域
+      }
+    }
+  },
   chainWebpack(config) {
     config.module
       .rule('svg')

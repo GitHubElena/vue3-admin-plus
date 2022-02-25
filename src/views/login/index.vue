@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form
       class="login-form"
-      ref="formRef"
+      ref="loginFormRef"
       :model="loginForm"
       :rules="loginTules"
     >
@@ -37,7 +37,8 @@
       <el-button
         type="primary"
         style="width: 100%; margin-bottom: 30px"
-        @click="submitForm(formRef)"
+        @click="handleLogin"
+        :loading="loading"
         >登录</el-button
       >
     </el-form>
@@ -46,6 +47,7 @@
 <script setup>
 import { validatePassword } from './rule'
 import { ref } from 'vue'
+import { useStore } from 'vuex'
 // 数据源
 const loginForm = ref({
   username: 'super-admin',
@@ -81,15 +83,25 @@ const onChangePwdType = () => {
     passwordType.value = 'password'
   }
 }
-
-const submitForm = (formEl) => {
-  if (!formEl) return
-  formEl.validate((valid) => {
+// 处理登录
+const loading = ref(false)
+const store = useStore()
+// loginFormRef实例
+const loginFormRef = ref(null)
+const handleLogin = () => {
+  loginFormRef.value.validate((valid) => {
     if (valid) {
-      console.log('submit!')
-    } else {
-      console.log('error submit!')
-      return false
+      loading.value = true
+      // 触发vuex user模块login方法
+      store
+        .dispatch('user/login', loginForm.value)
+        .then(() => {
+          loading.value = false
+        })
+        .catch((err) => {
+          console.log(err)
+          loading.value = false
+        })
     }
   })
 }

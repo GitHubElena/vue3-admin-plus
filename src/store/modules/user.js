@@ -2,13 +2,13 @@ import { loginApi } from '@/api/sys'
 import { setItem, getItem } from '@/utils/storage'
 import md5 from 'md5'
 import { TOKEN } from '@/constant'
-
+import router from '@/router'
 export default {
   namespaced: true,
   state: () => ({
     token: getItem(TOKEN) || ''
   }),
-  mutation: {
+  mutations: {
     setToken(state, token) {
       state.token = token
       setItem(TOKEN, token)
@@ -17,7 +17,7 @@ export default {
   actions: {
     /**
      * 登陆请求动作
-     * @param {*} context   {commit,state}
+     * @param {*} context   {dispatch, commit, getters, rootGetters }
      * @param {*} userInfo
      * @returns
      */
@@ -28,7 +28,8 @@ export default {
           username,
           password: md5(password)
         }).then(data => {
-          context.commit('user/setToken', data.data.data.token)
+          this.commit('user/setToken', data.token)
+          router.push('/')
           resolve()
         }).catch(err => {
           reject(err)

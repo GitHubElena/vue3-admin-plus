@@ -24,8 +24,8 @@ import variables from '@/styles/variables.scss'
 import {} from 'vue'
 </script>
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
-@import '@/styles/mixin.scss';
+@import '~@/styles/variables.scss';
+@import '~@/styles/mixin.scss';
 .app-warpper {
   @include clearfix;
   position: relative;
